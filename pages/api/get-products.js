@@ -1,9 +1,9 @@
 const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
 
 const api = new WooCommerceRestApi({
-    url: "http://dev.rtam.lt",
-    consumerKey: "ck_500684dcf48cdbfa3beae66b18f7e63d665972b2",
-    consumerSecret: "cs_fa24bf08397fd94fc4997c1d8810613a4d7a47b5",
+    url: process.env.WORDPRESS_SITE_URL,
+    consumerKey: process.env.WC_CONSUMER_KEY,
+    consumerSecret: process.env.WC_CONSUMER_SECRET,
   version: "wc/v3"
 });
 
