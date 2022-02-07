@@ -8,6 +8,8 @@ import Header from '../components/header'
 import { getAllPostsForHome, getPrimaryMenu } from '../lib/api'
 import { CMS_NAME } from '../lib/constants'
 import Products from '../src/products'
+import { getProductsData } from '../src/utils/products';
+
 
 export default function Index({ allPosts: { edges }, preview, menuItems, products}) {
   const heroPost = edges[0]?.node
@@ -46,11 +48,14 @@ export async function getStaticProps({ preview = false }) {
   const allPosts = await getAllPostsForHome(preview)
   const menuItems = await getPrimaryMenu();
   
-  const req = await fetch('http://localhost:3000/api/get-products');
-  const products = await req.json()
+  const { data: products} = await getProductsData();
+
+  // const req = await fetch('http://localhost:3000/api/get-products');
+  // const products = await req.json()
 
   
   return {
-    props: { allPosts, preview, menuItems, products: products?.products },
+    props: { allPosts, preview, menuItems, 
+            products: products ?? {} },
   }
 }

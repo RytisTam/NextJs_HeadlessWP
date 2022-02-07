@@ -7,13 +7,13 @@ import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
-import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/api'
+import { getAllPostsWithSlug, getPostAndMorePosts, getPrimaryMenu } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
 import Tags from '../../components/tags'
 
-export default function Post({ post, posts, preview }) {
+export default function Post({ post, posts, preview, menuItems }) {
   const router = useRouter()
   const morePosts = posts?.edges
 
@@ -24,7 +24,6 @@ export default function Post({ post, posts, preview }) {
   return (
     <Layout preview={preview}>
       <Container>
-        <Header />
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
@@ -63,12 +62,14 @@ export default function Post({ post, posts, preview }) {
 
 export async function getStaticProps({ params, preview = false, previewData }) {
   const data = await getPostAndMorePosts(params.slug, preview, previewData)
+  const menuItems = await getPrimaryMenu();
 
   return {
     props: {
       preview,
       post: data.post,
       posts: data.posts,
+      menuItems,
     },
   }
 }
@@ -81,3 +82,4 @@ export async function getStaticPaths() {
     fallback: true,
   }
 }
+
